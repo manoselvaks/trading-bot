@@ -4,3 +4,4 @@ venv/
 __pycache__/
 *.pyc
 log.txt
+trade_log.csv
