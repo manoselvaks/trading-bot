@@ -95,7 +95,10 @@ pending_order_exists = any(
 if pending_order_exists:
     print(f"There is already a pending order for {TICKER} - skipping new entry to avoid stacking.")
 
-if current_position is not None and not STOP_ALL_TRADING:
+if current_position is not None:
+    # Stop-loss runs even if the circuit breaker has tripped — the circuit
+    # breaker only blocks *new* entries; it should never suppress closing
+    # a losing position, since a bad day is exactly when that matters most.
     entry_price = float(current_position.avg_entry_price)
     current_price = float(current_position.current_price)
     unrealized_pct = (current_price - entry_price) / entry_price
